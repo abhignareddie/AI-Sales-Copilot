@@ -23,8 +23,8 @@ class MemoryAgent(BaseAgent, LegacyBaseAgent):
     name = "memory_agent"
     description = "Stores and retrieves long-term customer memory"
 
-    def __init__(self, db: AsyncSession):
-        LegacyBaseAgent.__init__(self)
+    def __init__(self, db: AsyncSession, *args, **kwargs):
+        LegacyBaseAgent.__init__(self, *args, **kwargs)
         self.memory_tool = MemoryTool(db)
 
     async def execute(self, state: dict[str, Any]) -> dict[str, Any]:

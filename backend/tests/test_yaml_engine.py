@@ -10,52 +10,52 @@ from app.framework.registry import AgentRegistry
 def setup_dummy_agents():
     """Register dummy agents for test workflows."""
     @AgentRegistry.register("patient_triage_agent")
-    class PatientTriage:
+    class PatientTriage(MagicMock):
         name = "patient_triage_agent"
-        def __init__(self, *args, **kwargs):
-            pass
         async def execute(self, state):
-            return {"executed_agents": [self.name]}
+            state.setdefault("executed_agents", [])
+            state["executed_agents"].append(self.name)
+            return state
 
     @AgentRegistry.register("symptom_analyzer_agent")
-    class SymptomAnalyzer:
+    class SymptomAnalyzer(MagicMock):
         name = "symptom_analyzer_agent"
-        def __init__(self, *args, **kwargs):
-            pass
         async def execute(self, state):
-            return {"executed_agents": [self.name]}
+            state.setdefault("executed_agents", [])
+            state["executed_agents"].append(self.name)
+            return state
 
     @AgentRegistry.register("medical_history_agent")
-    class MedicalHistory:
+    class MedicalHistory(MagicMock):
         name = "medical_history_agent"
-        def __init__(self, *args, **kwargs):
-            pass
         async def execute(self, state):
-            return {"executed_agents": [self.name]}
+            state.setdefault("executed_agents", [])
+            state["executed_agents"].append(self.name)
+            return state
 
     @AgentRegistry.register("clinical_risk_agent")
-    class ClinicalRisk:
+    class ClinicalRisk(MagicMock):
         name = "clinical_risk_agent"
-        def __init__(self, *args, **kwargs):
-            pass
         async def execute(self, state):
-            return {"executed_agents": [self.name]}
+            state.setdefault("executed_agents", [])
+            state["executed_agents"].append(self.name)
+            return state
 
     @AgentRegistry.register("treatment_recommender_agent")
-    class TreatmentRecommender:
+    class TreatmentRecommender(MagicMock):
         name = "treatment_recommender_agent"
-        def __init__(self, *args, **kwargs):
-            pass
         async def execute(self, state):
-            return {"executed_agents": [self.name]}
+            state.setdefault("executed_agents", [])
+            state["executed_agents"].append(self.name)
+            return state
 
     @AgentRegistry.register("medical_review_agent")
-    class MedicalReview:
+    class MedicalReview(MagicMock):
         name = "medical_review_agent"
-        def __init__(self, *args, **kwargs):
-            pass
         async def execute(self, state):
-            return {"executed_agents": [self.name]}
+            state.setdefault("executed_agents", [])
+            state["executed_agents"].append(self.name)
+            return state
 
 
 def test_workflow_engine_load_sales():

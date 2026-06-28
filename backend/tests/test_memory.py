@@ -66,7 +66,7 @@ async def test_memory_agent_execute():
     state["risk_assessment"] = {"risk_level": "medium", "overall_risk_score": 0.5}
     state["opportunity_assessment"] = {"overall_opportunity_score": 0.7}
 
-    with patch("app.agents.base_agent.get_llm") as mock_llm:
+    with patch("app.agents.llm_provider.get_llm") as mock_llm:
         mock_llm.return_value = MagicMock()
 
         mock_db = MagicMock()

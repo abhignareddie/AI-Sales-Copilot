@@ -15,7 +15,7 @@ def merge_dicts(left: dict, right: dict) -> dict:
 
 
 def merge_lists(left: list, right: list) -> list:
-    """Append new items to existing list (deduplication-safe)."""
+    """Append new items to existing list."""
     return left + right
 
 
@@ -53,8 +53,8 @@ class AgentState(TypedDict, total=False):
     # ─── Recommendations ─────────────────────────────────
     recommendations: list[dict]
 
-    # ─── Human Review ────────────────────────────────────
-    human_review: dict
+    # ─── Human Review Result ─────────────────────────────
+    human_review_result: dict
 
     # ─── Memory ──────────────────────────────────────────
     memory: list[dict]
@@ -77,6 +77,7 @@ def create_initial_state(
     user_id: int,
 ) -> AgentState:
     """Create a fresh AgentState with defaults."""
+
     return AgentState(
         customer_id=customer_id,
         business_goal=business_goal,
@@ -94,7 +95,7 @@ def create_initial_state(
         opportunity_assessment={},
         retrieved_documents=[],
         recommendations=[],
-        human_review={},
+        human_review_result={},
         memory=[],
         memory_updated=False,
         planner_decisions={},

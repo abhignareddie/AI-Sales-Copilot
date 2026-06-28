@@ -9,7 +9,7 @@ from app.agents.schemas.agent_state import create_initial_state
 
 @pytest.fixture
 def planner():
-    with patch("app.agents.base_agent.get_llm") as mock_llm:
+    with patch("app.agents.planner.planner.get_llm") as mock_llm:
         mock_llm.return_value = MagicMock()
         agent = PlannerAgent()
         return agent

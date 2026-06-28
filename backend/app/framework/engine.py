@@ -106,13 +106,14 @@ class WorkflowEngine:
                 agents = step.get("agents", [])
                 
                 # Define parallel step execution node
-                def make_parallel_node(agents_list=agents):
+                def make_parallel_node(agents_list=agents, instances=node_instances):
                     async def parallel_fn(state: AgentState) -> AgentState:
                         tasks = []
                         for a_name in agents_list:
-                            # Invoke node wrapper directly
-                            node_wrapper = graph.nodes[a_name].runnable
-                            tasks.append(node_wrapper.ainvoke(state))
+                            # Use the agent instance directly
+                            instance = instances.get(a_name)
+                            if instance is not None:
+                                tasks.append(instance.execute(state))
                         
                         results = await asyncio.gather(*tasks, return_exceptions=True)
                         
@@ -123,13 +124,13 @@ class WorkflowEngine:
                                 continue
                             for key, val in res.items():
                                 if key == "executed_agents":
-                                     merged["executed_agents"] = list(merged.get("executed_agents", [])) + list(val)
+                                    merged["executed_agents"] = list(merged.get("executed_agents", [])) + list(val)
                                 elif key == "agent_errors":
-                                     merged.setdefault("agent_errors", {}).update(val)
+                                    merged.setdefault("agent_errors", {}).update(val)
                                 elif key == "agent_timings":
-                                     merged.setdefault("agent_timings", {}).update(val)
+                                    merged.setdefault("agent_timings", {}).update(val)
                                 elif val:
-                                     merged[key] = val
+                                    merged[key] = val
                         return merged
                     return parallel_fn
                 
@@ -160,8 +161,8 @@ class WorkflowEngine:
         last_node = get_step_node(len(sorted_steps) - 1)
         graph.add_edge(last_node, END)
 
-        # Compile the graph
-        return graph.compile()
+        # Compile with memory saver checkpointer
+        return graph.compile(checkpointer=MemorySaver())
 
     async def execute(
         self,
@@ -173,7 +174,8 @@ class WorkflowEngine:
         # Initialize tracing
         state = create_initial_state(customer_id, business_goal, user_id)
         tracer = Tracer(state["execution_id"])
-        state["tracer"] = tracer
+        # Do NOT put tracer into graph state — LangGraph checkpointer (MemorySaver)
+        # serializes state with msgpack and Tracer is not serializable.
 
         config = {"configurable": {"thread_id": state["execution_id"]}}
         

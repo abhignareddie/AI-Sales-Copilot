@@ -8,7 +8,7 @@ from app.agents.schemas.agent_state import create_initial_state
 
 def test_graph_build_succeeds():
     """Test that the graph builds without errors."""
-    with patch("app.agents.base_agent.get_llm") as mock_llm:
+    with patch("app.agents.graph.langgraph_builder.get_llm") as mock_llm:
         mock_llm.return_value = MagicMock()
         from app.agents.graph.langgraph_builder import build_graph
         mock_db = MagicMock()
@@ -18,7 +18,7 @@ def test_graph_build_succeeds():
 
 def test_graph_compile_succeeds():
     """Test that the graph compiles without errors."""
-    with patch("app.agents.base_agent.get_llm") as mock_llm:
+    with patch("app.agents.graph.langgraph_builder.get_llm") as mock_llm:
         mock_llm.return_value = MagicMock()
         from app.agents.graph.langgraph_builder import compile_graph
         mock_db = MagicMock()
@@ -28,7 +28,7 @@ def test_graph_compile_succeeds():
 
 def test_graph_has_all_nodes():
     """Test that the graph contains all expected nodes."""
-    with patch("app.agents.base_agent.get_llm") as mock_llm:
+    with patch("app.agents.graph.langgraph_builder.get_llm") as mock_llm:
         mock_llm.return_value = MagicMock()
         from app.agents.graph.langgraph_builder import build_graph
         mock_db = MagicMock()
@@ -37,7 +37,7 @@ def test_graph_has_all_nodes():
         expected_nodes = {
             "planner", "crm", "parallel_analysis",
             "risk", "opportunity", "recommendation",
-            "human_review_node", "memory_node",
+            "human_review_step", "memory_step",
         }
         actual_nodes = set(graph.nodes.keys())
         assert expected_nodes.issubset(actual_nodes), (
