@@ -182,8 +182,8 @@ def build_graph(db: AsyncSession) -> StateGraph:
     graph.add_node("risk", risk_node)
     graph.add_node("opportunity", opportunity_node)
     graph.add_node("recommendation", recommendation_node)
-    graph.add_node("human_review", human_review_node)
-    graph.add_node("memory", memory_node)
+    graph.add_node("human_review_node", human_review_node)
+    graph.add_node("memory_node", memory_node)
 
     # Set entry point
     graph.set_entry_point("planner")
@@ -194,9 +194,9 @@ def build_graph(db: AsyncSession) -> StateGraph:
     graph.add_edge("parallel_analysis", "risk")
     graph.add_edge("risk", "opportunity")
     graph.add_edge("opportunity", "recommendation")
-    graph.add_edge("recommendation", "human_review")
-    graph.add_edge("human_review", "memory")
-    graph.add_edge("memory", END)
+    graph.add_edge("recommendation", "human_review_node")
+    graph.add_edge("human_review_node", "memory_node")
+    graph.add_edge("memory_node", END)
 
     logger.info("LangGraph built: planner → crm → [parallel analysis] → risk → opportunity → recommendation → human_review → memory")
     return graph

@@ -106,13 +106,13 @@ class WorkflowEngine:
                 agents = step.get("agents", [])
                 
                 # Define parallel step execution node
-                async def make_parallel_node(agents_list=agents):
+                def make_parallel_node(agents_list=agents):
                     async def parallel_fn(state: AgentState) -> AgentState:
                         tasks = []
                         for a_name in agents_list:
                             # Invoke node wrapper directly
-                            node_wrapper = graph.nodes[a_name]
-                            tasks.append(node_wrapper(state))
+                            node_wrapper = graph.nodes[a_name].runnable
+                            tasks.append(node_wrapper.ainvoke(state))
                         
                         results = await asyncio.gather(*tasks, return_exceptions=True)
                         
@@ -123,18 +123,18 @@ class WorkflowEngine:
                                 continue
                             for key, val in res.items():
                                 if key == "executed_agents":
-                                    merged["executed_agents"] = list(merged.get("executed_agents", [])) + list(val)
+                                     merged["executed_agents"] = list(merged.get("executed_agents", [])) + list(val)
                                 elif key == "agent_errors":
-                                    merged.setdefault("agent_errors", {}).update(val)
+                                     merged.setdefault("agent_errors", {}).update(val)
                                 elif key == "agent_timings":
-                                    merged.setdefault("agent_timings", {}).update(val)
+                                     merged.setdefault("agent_timings", {}).update(val)
                                 elif val:
-                                    merged[key] = val
+                                     merged[key] = val
                         return merged
                     return parallel_fn
                 
                 # Re-add parallel handler
-                graph.add_node(group_name, asyncio.run(make_parallel_node()))
+                graph.add_node(group_name, make_parallel_node())
                 parallel_nodes_map[step.get("step")] = group_name
 
         # Add edges based on YAML steps
@@ -160,8 +160,8 @@ class WorkflowEngine:
         last_node = get_step_node(len(sorted_steps) - 1)
         graph.add_edge(last_node, END)
 
-        # Compile with memory saver checkpointer
-        return graph.compile(checkpointer=MemorySaver())
+        # Compile the graph
+        return graph.compile()
 
     async def execute(
         self,

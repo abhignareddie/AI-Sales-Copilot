@@ -73,15 +73,15 @@ class PromptRegistry:
         logger.info(f"[Framework] Registered Prompt template: '{name}'")
 
     @classmethod
-    def get(cls, name: str, **kwargs: Any) -> str:
+    def get(cls, template_name: str, **kwargs: Any) -> str:
         """Retrieve a prompt, optionally formatting it with placeholders."""
-        if name not in cls._prompts:
-            raise KeyError(f"Prompt template '{name}' not found")
-        template = cls._prompts[name]
+        if template_name not in cls._prompts:
+            raise KeyError(f"Prompt template '{template_name}' not found")
+        template = cls._prompts[template_name]
         if kwargs:
             try:
                 return template.format(**kwargs)
             except KeyError as e:
-                logger.warning(f"Missing variable for prompt template {name}: {e}")
+                logger.warning(f"Missing variable for prompt template {template_name}: {e}")
                 return template
         return template

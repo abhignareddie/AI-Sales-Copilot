@@ -13,7 +13,7 @@ from app.core.logging import logger
 
 
 @AgentRegistry.register("memory_agent")
-class MemoryAgent(BaseAgent):
+class MemoryAgent(BaseAgent, LegacyBaseAgent):
     """
     Manages long-term customer memory.
     Stores meeting summaries, customer preferences, approved/rejected recommendations,
@@ -24,6 +24,7 @@ class MemoryAgent(BaseAgent):
     description = "Stores and retrieves long-term customer memory"
 
     def __init__(self, db: AsyncSession):
+        LegacyBaseAgent.__init__(self)
         self.memory_tool = MemoryTool(db)
 
     async def execute(self, state: dict[str, Any]) -> dict[str, Any]:
