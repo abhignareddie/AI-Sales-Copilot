@@ -1,12 +1,16 @@
 # Multistage build for frontend
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 
 WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN npm install
 
+# install dependencies cleanly
+COPY package.json package-lock.json* ./
+RUN npm ci
+
+# copy source
 COPY . .
 RUN npm run build
+
 
 # Final static server stage
 FROM nginx:alpine
