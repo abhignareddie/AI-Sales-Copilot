@@ -1,0 +1,22 @@
+name: "Healthcare Diagnostics Copilot"
+domain: "healthcare"
+retry_policy:
+  max_retries: 1
+  delay: 2.0
+
+workflows:
+  - step: 1
+    agents: ["patient_triage_agent"]
+    parallel: false
+  - step: 2
+    agents: ["symptom_analyzer_agent", "medical_history_agent"]
+    parallel: true
+  - step: 3
+    agents: ["clinical_risk_agent"]
+    parallel: false
+  - step: 4
+    agents: ["treatment_recommender_agent"]
+    parallel: false
+  - step: 5
+    agents: ["medical_review_agent"]
+    parallel: false

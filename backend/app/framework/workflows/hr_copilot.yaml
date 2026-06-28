@@ -1,0 +1,19 @@
+name: "HR Talent Screening Copilot"
+domain: "human_resources"
+retry_policy:
+  max_retries: 1
+  delay: 1.0
+
+workflows:
+  - step: 1
+    agents: ["resume_parser_agent"]
+    parallel: false
+  - step: 2
+    agents: ["skills_evaluator_agent", "experience_verifier_agent"]
+    parallel: true
+  - step: 3
+    agents: ["candidate_matching_agent"]
+    parallel: false
+  - step: 4
+    agents: ["hr_review_agent"]
+    parallel: false
