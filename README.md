@@ -1,286 +1,340 @@
-# AI Sales Copilot – Enterprise Next Best Action Platform
+# AI Sales Copilot — Agentic Next-Best-Action Platform
 
-> **XLVentures.AI Hackathon Submission** — Multi-agent AI system that generates explainable, auditable sales recommendations with mandatory Human-in-the-Loop approval gates. Built for enterprise-scale deployment.
-
----
-
-## ✨ Key Differentiators
-
-| Capability | Implementation |
-|---|---|
-| **Multi-Agent Orchestration** | LangGraph StateGraph with 11 specialized agents running parallel fan-out/fan-in |
-| **Human-in-the-Loop** | AI never executes actions autonomously — every recommendation requires human approval |
-| **Hybrid RAG** | Semantic (ChromaDB embeddings) + keyword search across uploaded playbooks |
-| **Explainable AI** | Every recommendation includes confidence scores, evidence chains, and ROI projections |
-| **What-If Simulator** | Real-time probability recalculation when deal parameters change |
-| **Zero Trust Security** | PyOTP MFA, ABAC region policies, Fernet encryption, AI prompt injection guardrails |
-| **Real-Time Streaming** | Server-Sent Events (SSE) for live agent execution visualization |
-| **Executive Reporting** | Styled PDF reports via ReportLab with NBA matrices and compliance statements |
+> **Subtitle**: Dataset-backed Agentic Decision Intelligence Platform for B2B SaaS Sales, Customer Success, Retention, and Revenue Risk.
 
 ---
 
-## 🏗 Architecture
+## 📖 1. Project Overview
 
-```
-AI-Sales-Copilot/
-├── backend/                          # FastAPI Backend (Python 3.11)
-│   ├── app/
-│   │   ├── api/v1/                   # 19 REST API Routers (109 routes)
-│   │   │   ├── auth.py               # JWT authentication & token rotation
-│   │   │   ├── security_endpoints.py # MFA, ABAC, audit, PDF export
-│   │   │   ├── stream.py             # SSE real-time agent streaming
-│   │   │   ├── customers.py          # CRM account management
-│   │   │   ├── recommendations.py    # NBA CRUD + status filtering
-│   │   │   ├── review.py             # Human-in-the-Loop approval queue
-│   │   │   ├── analytics.py          # BI dashboards, funnels, forecasting
-│   │   │   ├── knowledge.py          # RAG document management
-│   │   │   ├── agent.py              # LangGraph workflow execution
-│   │   │   └── ...                   # meetings, emails, tickets, memory, etc.
-│   │   ├── agents/                   # 11 LangGraph Agent Nodes
-│   │   │   ├── graph/langgraph_builder.py  # StateGraph compiler
-│   │   │   └── nodes/               # Individual agent implementations
-│   │   ├── core/                     # Config, Security, Logging, Dependencies
-│   │   ├── database/                 # SQLAlchemy 2.0 Async ORM
-│   │   ├── models/                   # 9 SQLAlchemy Models
-│   │   ├── schemas/                  # Pydantic v2 Request/Response Schemas
-│   │   ├── services/                 # Business Logic Layer
-│   │   │   ├── security_service.py   # Encryption, File Validation, AI Guardrails, TOTP
-│   │   │   └── report_service.py     # ReportLab PDF Generation
-│   │   ├── rag/                      # Hybrid RAG Pipeline
-│   │   ├── redis/                    # Redis Session/Cache Client
-│   │   ├── vectorstore/             # ChromaDB Vector Store Client
-│   │   ├── repositories/            # Generic Repository Pattern
-│   │   └── middleware/              # Request Logging Middleware
-│   ├── tests/                       # Pytest Test Suite
-│   └── requirements.txt             # 33 production dependencies
-├── frontend/                         # React 19 Frontend
-│   ├── src/
-│   │   ├── App.tsx                   # 8-page SPA with routing
-│   │   ├── index.css                 # Tailwind + custom design tokens
-│   │   └── main.tsx                  # React DOM entry
-│   ├── package.json                  # 16 dependencies
-│   └── vite.config.ts               # Proxy to backend API
-├── docker/                           # Docker Build Configs
-│   ├── Dockerfile.backend
-│   ├── Dockerfile.frontend
-│   └── nginx.conf
-├── docker-compose.yml                # Full Stack Orchestration
-├── .github/workflows/                # CI/CD Pipeline
-└── docs/                            # Architecture Documentation
-```
+AI Sales Copilot is a reusable Agentic Decision Intelligence Platform that converts customer, subscription, usage, support, churn, and enterprise knowledge signals into explainable next-best-action recommendations. The system uses planner-based agent orchestration, retrieval-augmented knowledge grounding, scoring, counterfactual explanations, human-in-the-loop review, audit logging, and memory-based rerun behavior.
+
+> [!IMPORTANT]
+> **Data Scope Notice**: This platform uses **dataset-backed synthetic SaaS records — not live production CRM data**.
 
 ---
 
-## 🧠 Multi-Agent LangGraph Pipeline
+## 📌 2. Hackathon Problem Alignment
+
+This project addresses the Intelligent Next Best Action Platform challenge by demonstrating:
+* **Dynamic planner-based agent orchestration**: A master Planner Agent coordinates the execution sequence of specialized downstream agents.
+* **Reusable agent and tool architecture**: Independent, modular agent nodes that consume standardized state patterns.
+* **Retrieval across enterprise knowledge sources**: High-efficiency Hybrid RAG utilizing vector and keyword lookup against playbooks.
+* **Explainable recommendations with evidence**: Recommendations containing clear confidence scores, mathematical risk breakdowns, and direct playbook citations.
+* **Human-in-the-loop review**: Enforced approval gates where human representatives can accept, modify, or reject generated suggestions.
+* **Memory from previous interactions**: Decision memory records that influence future recommendation planning loops.
+* **Configurable scoring and business rules**: Customizable thresholds for customer health scoring, win probability, and churn risks.
+* **Benchmarking and measurable outcomes**: Real-time evaluation engines to compare heuristic systems against full agentic models.
+
+---
+
+## 💼 3. Business Domain & Process
+
+### Business Domain
+**B2B SaaS Sales / Customer Success / Revenue Operations**
+
+### Business Process
+A sales rep, customer success manager, or manager reviews an account, analyzes customer risk and opportunity signals, receives ranked next-best-action recommendations, reviews supporting evidence, approves or rejects the action, and the system remembers the decision for future recommendations.
+
+---
+
+## ✨ 4. Key Features
+
+* **Dataset Intelligence Dashboard**: Unified view of the health, actions, and historical telemetry of synthetic customer databases.
+* **Customer 360 Workspace**: Comprehensive logs, engagement history, and active health scoring breakdowns for accounts.
+* **AI Copilot Flow / Decision Studio**: Visual runtime monitor tracking agent planning execution steps.
+* **Planner Agent Orchestration**: Central director generating execution paths.
+* **Specialized Agent Fleet**: Independent nodes for Customer Context, Knowledge Retrieval, Support Signals, Churn Risk, Recommendation, Explanation, and Memory.
+* **Evidence Snippets**: Exact source highlights from playbooks explaining "Why" an action was suggested.
+* **Transparent Scoring Breakdown**: Numeric values justifying win rate percentages and customer health metrics.
+* **Counterfactual Explanation**: Real-time "What-If" parameter tuning to see how changing parameters alters recommendations.
+* **Human Review Queue**: Secure task backlog to verify and sign-off on recommended decisions.
+* **Audit Log**: Tamper-evident ledger documenting all system state mutations.
+* **Memory-based Rerun**: Long-term context recall that dynamically updates recommendations upon subsequent reruns.
+* **Benchmark & Analytics Dashboard**: BI dashboards mapping business impact, forecast curves, and model comparison funnels.
+
+---
+
+## 🏗️ 5. System Architecture
+
+![System Architecture](system-architecture.jpeg)
+
+---
+
+## 🧠 6. Multi-Agent Planner Pipeline
 
 ```mermaid
 graph TD
-    A[User Query] --> B[Planner Agent]
-    B --> C[CRM Agent]
-    B --> D[Knowledge Agent]
-    B --> E[Support Agent]
-    B --> F[Risk Agent]
-    B --> G[Opportunity Agent]
-    C --> H[Recommendation Agent]
-    D --> H
-    E --> H
-    F --> H
-    G --> H
-    H --> I[Human Review Gate]
-    I -->|Approved| J[Memory Agent]
-    I -->|Rejected| K[Feedback Loop]
-    J --> L[Dashboard Update]
+    A[Business User Request] --> B[Planner Agent]
+
+    B --> C[Customer Context Agent]
+    B --> D[Knowledge Retrieval Agent]
+    B --> E[Support Signal Agent]
+    B --> F[Risk & Opportunity Agent]
+    B --> G[Recommendation Agent]
+
+    C --> H[Customer 360 Context]
+    D --> I[Relevant Playbooks and Knowledge]
+    E --> J[Support and Sentiment Signals]
+    F --> K[Churn, Renewal, and Expansion Signals]
+
+    H --> L[Scoring Engine]
+    I --> L
+    J --> L
+    K --> L
+
+    L --> G
+    G --> M[Explanation / Counterfactual Agent]
+
+    M --> N[Ranked Next-Best Actions]
+    N --> O[Human Review Gate]
+
+    O -->|Approved| P[Audit Log]
+    O -->|Rejected / Edited| Q[Feedback Loop]
+
+    P --> R[Memory Agent]
+    Q --> R
+
+    R --> S[Memory-Based Rerun]
+    S --> T[Dashboard / Recommendation Update]
 ```
 
 ### Agent Responsibilities
-
 | Agent | Role | Output |
 |---|---|---|
-| **Planner** | Compiles optimal execution plan based on customer context | Agent activation list |
-| **CRM** | Retrieves customer profiles, deal history, and pipeline stage | Profile data |
-| **Knowledge** | Hybrid RAG search across indexed playbooks and product docs | Relevant document chunks |
-| **Transcript** | Processes meeting transcripts for sentiment and key topics | Meeting insights |
-| **Email** | Analyzes email communication patterns and competitor mentions | Communication signals |
-| **Support** | Evaluates open tickets for frustration triggers and churn signals | Risk indicators |
-| **Risk** | Computes retention probability and churn risk scores | Risk assessment |
-| **Opportunity** | Identifies upsell, cross-sell, and expansion revenue opportunities | Revenue opportunities |
-| **Recommendation** | Aggregates all agent outputs into ranked, explainable NBAs | Action items with ROI |
-| **Human Review** | Enforces mandatory approval gates before any action execution | Audit trail entry |
-| **Memory** | Persists long-term customer interaction context and preferences | Persistent memory |
+| **Planner Agent** | Dynamically decides which specialized agents should run based on the customer/account context and the requested workflow. | Execution plan and agent activation sequence |
+| **Customer Context Agent** | Builds a Customer 360 profile using account, subscription, usage, support, churn, and historical decision data. | Unified customer/account context |
+| **Knowledge Retrieval Agent** | Retrieves relevant business knowledge from indexed playbooks, best practices, policies, and product/support documentation using ChromaDB. | Evidence snippets and relevant knowledge chunks |
+| **Support Signal Agent** | Analyzes support tickets, satisfaction signals, response/resolution time, and customer frustration patterns. | Support risk signals and sentiment indicators |
+| **Risk & Opportunity Agent** | Identifies churn risk, renewal risk, adoption gaps, expansion potential, and revenue opportunities from dataset-backed customer signals. | Risk and opportunity assessment |
+| **Recommendation Agent** | Converts agent outputs into ranked next-best-action recommendations for retention, adoption, support recovery, renewal, or expansion. | Candidate next-best actions |
+| **Scoring Engine** | Scores recommendations using business impact, urgency, confidence, policy fit, and customer readiness. | Transparent scoring breakdown and final priority score |
+| **Explanation / Counterfactual Agent** | Explains why the selected action was recommended and why other possible actions were not prioritized. | Reasoning, evidence summary, and counterfactual explanation |
+| **Human Review Gate** | Allows the user to approve, reject, edit, or escalate recommendations before action execution. | Human decision and review status |
+| **Audit Log** | Stores decision history, selected recommendation, reviewer decision, timestamp, and governance trail. | Auditable decision record |
+| **Memory Agent** | Learns from approved/rejected actions and uses prior decisions to adjust future recommendations for the same customer. | Persistent memory and memory-adjusted rerun behavior |
+| **Benchmark Engine** | Compares rule-based, heuristic, and agentic recommendation strategies using measurable evaluation metrics. | Benchmark / analytics results |
+
+### Why this pipeline is agentic
+
+The system does not simply answer a user question like a chatbot. It uses a Planner Agent to coordinate specialized agents, retrieves enterprise knowledge, analyzes customer risk and opportunity signals, generates explainable next-best actions, routes them through human review, records decisions in audit logs, and updates memory so future recommendations improve over time.
 
 ---
 
-## 🔐 Security Architecture
+## ⚙️ 7. How the Platform Works
 
-| Layer | Implementation |
-|---|---|
-| **Authentication** | JWT access + refresh tokens with rotation |
-| **Multi-Factor Auth** | PyOTP TOTP (Google Authenticator compatible) |
-| **Authorization** | Role-Based (RBAC) + Attribute-Based (ABAC) via X-User-Region headers |
-| **Encryption at Rest** | Fernet symmetric encryption for sensitive data fields |
-| **AI Guardrails** | Regex-based prompt injection detection (9 patterns) |
-| **File Security** | Extension whitelist, magic byte validation, size limits |
-| **Audit Trail** | Immutable audit log for every state-changing operation |
+The platform operates as an explainable, trust-guaranteed recommendation workflow. First, the user or system triggers an audit of a client account. The **Planner Agent** designs a coordination workflow map. A series of specialized collector agents scan CRM context, tickets, transcripts, and document databases. 
+
+The **Recommendation Agent** aggregates these telemetry signals into proposed actions, which are subsequently annotated with confidence levels, logic explanations, alternative choices, and exact RAG text snippets by the **Explanation Agent**. The recommendation is held in the **Human Review Queue**; once a human takes action (approving, editing, or rejecting), an entry is written to the **Audit Log** and stored inside the **Memory Agent**'s context, altering how the system responds if evaluated again.
 
 ---
 
-## 🚀 Quick Start
+## 🛠️ 8. Tech Stack
 
-### Prerequisites
-- Python 3.11+
-- Node.js 18+ (for frontend)
-- PostgreSQL 16 / Redis 7 / ChromaDB (or use Docker)
+### Frontend
+* **React** (Component framework)
+* **Vite** (Build engine)
+* **Tailwind CSS** (Design system & styling)
+* **React Flow & Recharts** (Interactive graphs and pipeline visualizations)
+* **Lucide React** (Icons)
 
-### Using Docker (Recommended)
-```bash
-cp .env.example .env
-docker-compose up --build
+### Backend
+* **Python 3.12** (Core runtime)
+* **FastAPI** (REST API layer)
+* **Uvicorn** (Asynchronous app server)
+* **SQLAlchemy** (Database engine client)
+* **SQLite** (Default local transactional state database)
+* **ChromaDB** (Vector search client)
+* **Gemini API** (LLM orchestrator client)
+* **Pandas / Heuristic engines** (Analytics, forecasting, and scoring math)
+
+### Data
+* **RavenStack Synthetic SaaS Records** (Accounts, subscriptions, product usage)
+* **Engagement Datasets** (Meeting transcript transcripts, customer email histories)
+* **Ticketing Systems** (Priority level support tickets, frustration metrics)
+* **Knowledge Repository** (SaaS renewal playbooks, sales guides)
+
+---
+
+## 📊 9. Dataset and Knowledge Layer
+
+The core intelligence layer utilizes **dataset-backed synthetic SaaS records — not live production CRM data**. 
+1. **Relational CRM Data**: Seeded SQLite tables representing mock accounts, license sizes, usage statistics, active tickets, and emails.
+2. **Knowledge Retrieval Base**: Sales playbooks and SOPs are ingested, chunked, embedded via Sentence Transformers, and stored in a local directory inside ChromaDB. Hybrid RAG logic checks these vector embeddings and fallback BM25 keyword indices to pull verified, audit-ready context.
+
+---
+
+## 🚀 10. Local Setup Instructions
+
+* **Docker is optional** and not required for running the local demo.
+* **PostgreSQL and Redis are not required** for running the local demo. The demo runs entirely locally using SQLite, local ChromaDB indexes, and Gemini fallback mock states if API keys are not supplied.
+* A `.env` file is required to store local keys. **Do not commit `.env`.**
+
+Configure your local `.env` by copying `.env.example`:
+```env
+DATABASE_URL=sqlite+aiosqlite:///./ai_sales_copilot.db
+GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
-### Manual Setup
+---
 
-**Backend:**
-```bash
-cd backend
-python -m venv .venv
-.venv/Scripts/activate          # Windows
-source .venv/bin/activate       # macOS/Linux
+## 🐍 11. Backend Run Commands
+
+Run these setup commands in PowerShell from the project root:
+
+```powershell
+# Navigate to the backend directory
+cd "D:\AI-Sales-Copilot-main\backend"
+
+# Create a virtual environment using Python 3.12
+py -3.12 -m venv .venv
+
+# Set execution policy to allow script activation
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
+# Activate the virtual environment
+.\.venv\Scripts\Activate.ps1
+
+# Upgrade Python package manager
+python -m pip install --upgrade pip
+
+# Install dependencies
 pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
+
+# Apply required NumPy compatibility fix
+pip install "numpy<2"
+
+# Ingest RavenStack synthetic records and playbooks
+python ingest_data.py
+
+# Launch the FastAPI app server
+python -m uvicorn app.main:app --reload --port 8000
 ```
 
-**Frontend:**
-```bash
-cd frontend
-npm install
+* **Backend URL**: [http://localhost:8000](http://localhost:8000)
+* **Interactive API Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
+
+---
+
+## ⚡ 12. Frontend Run Commands
+
+Run these setup commands in PowerShell from the project root:
+
+```powershell
+# Navigate to the frontend directory
+cd "D:\AI-Sales-Copilot-main\frontend"
+
+# Install package dependencies bypassing strict peer warnings
+npm install --legacy-peer-deps
+
+# Launch the Vite developer server
 npm run dev
 ```
 
-### Access Points
-| Service | URL |
-|---|---|
-| Frontend | http://localhost:3000 |
-| Backend API | http://localhost:8000 |
-| Swagger UI | http://localhost:8000/docs |
-| ReDoc | http://localhost:8000/redoc |
-| Health Check | http://localhost:8000/health |
+* **Frontend URL**: Use the URL displayed in the terminal output, typically [http://localhost:3000](http://localhost:3000) or [http://localhost:5173](http://localhost:5173).
 
----
-
-## 📋 API Endpoints (109 Routes)
-
-### Authentication & Security
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/api/v1/auth/register` | Register new user |
-| POST | `/api/v1/auth/login` | Login (JWT) |
-| POST | `/api/v1/auth/refresh` | Rotate access token |
-| POST | `/api/v1/auth/logout` | Invalidate session |
-| GET | `/api/v1/auth/me` | Current user profile |
-| POST | `/api/v1/auth/mfa/setup` | Generate TOTP secret (Google Authenticator) |
-| POST | `/api/v1/auth/mfa/verify` | Validate 6-digit TOTP code |
-| GET | `/api/v1/security/audit` | ABAC-protected audit trail |
-| GET | `/api/v1/security/export-pdf` | Download executive PDF report |
-| GET | `/api/v1/security/events` | Security event alerts |
-| GET | `/api/v1/security/sessions` | Active user sessions |
-| POST | `/api/v1/security/logout-all` | Revoke all sessions |
-
-### Real-Time Streaming
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/v1/stream/planner` | SSE stream of agent execution updates |
-
-### Core Resources (CRUD)
-| Resource | Prefix | Features |
-|---|---|---|
-| Customers | `/api/v1/customers` | CRUD + search + health scoring |
-| Meetings | `/api/v1/meetings` | CRUD + date range filtering |
-| Emails | `/api/v1/emails` | CRUD + full-text search |
-| Support Tickets | `/api/v1/support-tickets` | CRUD + priority/status filtering |
-| Knowledge Base | `/api/v1/knowledge` | CRUD + file upload + RAG indexing |
-| Recommendations | `/api/v1/recommendations` | CRUD + status lifecycle |
-| Memories | `/api/v1/memories` | CRUD + type filtering |
-| Users | `/api/v1/users` | Admin CRUD |
-
-### Analytics & AI
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/v1/dashboard/stats` | Executive KPI metrics |
-| GET | `/api/v1/analytics/summary` | BI dashboard summary |
-| GET | `/api/v1/analytics/funnel` | Sales funnel breakdown |
-| GET | `/api/v1/analytics/forecast` | Revenue time-series forecast |
-| POST | `/api/v1/agent/execute` | Trigger LangGraph multi-agent workflow |
-| POST | `/api/v1/review/approve/{id}` | Approve recommendation |
-| POST | `/api/v1/review/reject/{id}` | Reject recommendation |
-| GET | `/api/v1/search/global` | Cross-entity semantic search |
-
----
-
-## 🧪 Testing
-
-```bash
-cd backend
-.venv/Scripts/python -m pytest tests/ -v
+#### Production Build Verification
+To compile and test the production production output, run:
+```powershell
+npm run build
 ```
 
-### Test Coverage
-| Test File | Tests | Description |
-|---|---|---|
-| `test_security_governance.py` | 6 | Encryption, file validation, guardrails, TOTP, PDF generation |
+---
+
+## 🎬 13. Demo Flow
+
+Experience the application features sequentially through this path:
+
+```text
+Dashboard
+→ Dataset Intelligence Layer
+→ Customers / Customer 360
+→ AI Copilot Flow
+→ Generate Next-Best Action
+→ Agent reasoning
+→ Evidence snippets
+→ Scoring breakdown
+→ Counterfactual explanation
+→ Human Review / Approve
+→ Audit Log
+→ Memory rerun
+→ Benchmark / Analytics
+```
 
 ---
 
-## 🛠 Tech Stack
+## 🧱 14. Architecture Walkthrough
 
-| Layer | Technology |
+```text
+Business User
+→ React + Vite Frontend
+→ FastAPI Backend
+→ Planner Agent
+→ Specialized Agents
+→ Gemini / Scoring / Rules / Benchmark
+→ RavenStack / SQLite / ChromaDB / Playbooks
+→ Ranked Next-Best Action
+→ Human Review
+→ Audit Log
+→ Memory
+→ Improved recommendation on rerun
+```
+
+The React + Vite frontend communicates with a FastAPI backend through REST APIs. The backend invokes a Planner Agent that coordinates specialized agents. These agents combine RavenStack synthetic SaaS records, SQLite application state, ChromaDB knowledge retrieval, Gemini LLM reasoning, business rules, scoring logic, and benchmark metrics. The final output is a ranked next-best action with evidence, confidence, scoring, counterfactual reasoning, and human review. Approved actions are stored in audit and memory so future reruns can adjust recommendations instead of repeating the same action.
+
+---
+
+## 🎯 15. Evaluation Mapping
+
+| Hackathon expectation | How this project satisfies it |
 |---|---|
-| **Backend** | FastAPI 0.115, Python 3.11, SQLAlchemy 2.0 (async), Pydantic v2 |
-| **Database** | PostgreSQL 16, Redis 7, ChromaDB 0.5 |
-| **Authentication** | JWT (python-jose), bcrypt, PyOTP 2.10 |
-| **AI/ML** | LangGraph 0.2.60, LangChain 0.3.13, Sentence Transformers 3.3 |
-| **LLM Providers** | Google Gemini 1.5 Pro, OpenAI GPT-4o (configurable) |
-| **RAG** | ChromaDB + all-MiniLM-L6-v2 embeddings + keyword fallback |
-| **Frontend** | React 19, TypeScript 5, Vite 5, TailwindCSS 3.4 |
-| **Visualization** | Recharts 2.12, ReactFlow 11.10, Lucide React icons |
-| **Reports** | ReportLab 5.0 (styled executive PDF generation) |
-| **Streaming** | SSE-Starlette 2.1 (Server-Sent Events) |
-| **DevOps** | Docker, Docker Compose, Nginx, GitHub Actions |
+| **Agentic AI architecture** | Planner agent coordinates specialized context, risk, knowledge, and recommendation nodes. |
+| **Reusability** | Modular agent definitions, clean utility classes, and flexible business rules models. |
+| **Memory** | Historic decision metrics stored in long-term memory affect downstream recommendation reruns. |
+| **Enterprise knowledge retrieval** | Hybrid vector RAG via ChromaDB index retrieves reference snippets from renewal playbooks. |
+| **Explainability** | RAG evidence clips, confidence score metrics, and visual "What-If" simulator widgets. |
+| **Human-in-the-loop** | Review queue allows approving, rejecting, editing, and escalating recommendations. |
+| **Business reasoning** | Incorporates mock SaaS metrics (support tickets, license usage, email communications). |
+| **Measurable outcomes** | Evaluation framework compares standard rules vs heuristic models vs LLM workflows. |
 
 ---
 
-## 📊 Database Models
+## ⚠️ 16. Known Limitations
 
-| Model | Key Fields | Purpose |
-|---|---|---|
-| **User** | email, role, hashed_password | Authentication & RBAC |
-| **Customer** | company_name, health_score, win_probability, annual_revenue | CRM with AI scoring |
-| **Meeting** | transcript, sentiment, action_items | Meeting intelligence |
-| **Email** | subject, content, direction, sentiment | Communication tracking |
-| **SupportTicket** | priority, status, frustration_score | Issue management |
-| **KnowledgeDocument** | title, file_path, chunk_count | RAG document store |
-| **Recommendation** | action, confidence, roi_estimate, status | AI-generated NBAs |
-| **Memory** | memory_type, content, context | Long-term customer memory |
-| **AuditLog** | action, entity, user_id, timestamp | Immutable audit trail |
+* Dataset-backed synthetic SaaS records are used for the demo.
+* This is not connected to a live CRM in the local version.
+* Gemini API key is required for full LLM-powered reasoning.
+* If Gemini is unavailable, fallback/heuristic logic may be used depending on implementation.
+* Local SQLite is used for hackathon demo simplicity.
 
 ---
 
-## 📌 XLVentures.AI Hackathon
+## 🧹 17. GitHub Cleanup Notes
 
-### 3-5 Minute Demo Script
-1. **Login & MFA Setup**: Log in using credential profiles and configure Google Authenticator TOTP tokens on the security panel.
-2. **Knowledge Ingestion (RAG)**: Navigate to the Knowledge Center and upload product guides or playbooks.
-3. **Execute Planner (SSE)**: Trigger the AI Copilot Flow for a target client. Observe live streaming terminal events as nodes process.
-4. **Approve Action**: View the explainability matrix, confidence breakdown charts, and alternatives comparison, and click "Approve & Execute".
-5. **PDF Report Export**: Export the auditable executive report package as a ReportLab PDF format document.
+Make sure **not to commit** local setup state files or API secrets:
+* `.env`
+* `.venv/`
+* `node_modules/`
+* `*.db`
+* `**pycache__/`
+* `dist/`
+* `build/`
+* `logs`
+* API keys
 
-### Enterprise Demo Mode
-* Activates automatically if `GEMINI_API_KEY` is not present or if the API connection rate limits / errors.
-* Returns a valid structured JSON output matching Pydantic validator schemas to guarantee zero-downtime presentations.
-
-### Known Limitations
-* **Gemini API Key**: Essential for live reasoning models, defaults to Demo Mode if key is empty.
-* **Redis Cache**: Optional; will bypass caching if Redis server is not reachable.
-* **ChromaDB**: Defaults to in-memory mode if HTTP client ports are not exposed.
+The repository's [.gitignore](file:///d:/AI-Sales-Copilot-main/.gitignore) file already includes:
+```gitignore
+.env
+.venv/
+node_modules/
+*.db
+__pycache__/
+.pytest_cache/
+dist/
+build/
+*.log
+.DS_Store
+Thumbs.db
+```
 
 ---
 
